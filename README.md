@@ -63,6 +63,43 @@ Jobs are processed asynchronously using **BullMQ**.
 - POST /analytics – Log an analytics event
 - GET /analytics/project/{projectId} – Get analytics events for a project
 
+## Database Schema
+
+```mermaid
+erDiagram
+    PROJECTS {
+        string id PK
+        string title
+        text description
+        datetime created_at
+        datetime updated_at
+    }
+
+    ASSETS {
+        string id PK
+        string filename
+        string file_path
+        string mime_type
+        string file_type
+        bigint file_size
+        string file_extension
+        string original_name
+        string project_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
+    ANALYTICS {
+        string id PK
+        string event_type
+        string project_id FK
+        datetime created_at
+    }
+
+    PROJECTS ||--o{ ASSETS : "has"
+    PROJECTS ||--o{ ANALYTICS : "records"
+```
+
 ## Notes
 
 - All render outputs are stored in a temporary directory inside the container.
